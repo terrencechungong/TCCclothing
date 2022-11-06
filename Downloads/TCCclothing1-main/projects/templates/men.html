@@ -60,14 +60,19 @@
     </form>
     <div class="container">
       <div class="grid grid--three">
+        
        {% for i in item %} 
        {% if i.gender == "Men" %}
         <div class="column">
           <div class="card project">
-            <a href="{%  url 'project' i %}" class="project">
+            {%for num in arr%}
+            {%if num == i.id%}
+            <a href="{%  url 'project' i.id %}" class="project">
+              {%endif%}
+              {%endfor%}
               <img class="project__thumbnail" src="{{i.picture.url}}" alt="project thumbnail" />
               <div class="card__body">
-                 <h3 class="project__title">{{i.item_name}}</h3> 
+                 <h3 class="project__title">{{i.item_name}}{{num}}</h3> 
                  <p><a class="project__author" href="#">{{i.gender}}</a></p> 
                  
                   <!-- DISPLAY SALE Price -->
@@ -92,7 +97,8 @@
           </div>
         </div>
         {% endif %}
-         {% endfor %} 
+      
+         {%endfor%}
       </div>
     </div>
   </section>

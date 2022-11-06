@@ -10,11 +10,11 @@
   <section class="hero-section text-center">
     <div class="container container--narrow">
       <div class="hero-section__box">
-        <h2>Search <span>Products</span></h2>
+        <h2>Search <span>Products </span></h2>
       </div>
 
       <div class="hero-section__search">
-        <form class="form" action="{% url 'sale' %}" method="get">
+        <form class="form" action="{% url 'sale' 'Women' %}" method="get">
           <div class="form__field">
             <label for="formInput#search">Search Products by Name </label>
             <input class="input input--text" id="formInput#search" type="text" name="search_query" value="{{search_query}}"
@@ -69,7 +69,7 @@
     <div class="container">
       <div class="grid grid--three">
        {% for i in item %} 
-       {% if i.on_sale.sale_name == "On Sale" %}
+       {% if i.on_sale.sale_name == "On Sale" and i.gender == gender %}
         <div class="column">
           <div class="card project">
             <a href="{%  url 'project' i %}" class="project">
@@ -102,8 +102,6 @@
       </div>
     </div>
   </section>
-
- 
   <div class="pagination">
     <ul class="container">
      {% if item.has_previous  %}

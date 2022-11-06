@@ -75,7 +75,7 @@ class Item(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     type = models.CharField(max_length=50, blank=True, null=True)
     def __str__(self):
-        return self.item_name
+        return self.item_name+" "+self.gender
 
 class Review(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')

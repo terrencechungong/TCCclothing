@@ -1,8 +1,6 @@
 {% extends 'projects/main.html' %}
 
 {% block content %}
-{% for i in item %}
-{% if i.item_name == object %}
   <main class="singleProject my-md">
     <div class="container">
       <div class="layout">
@@ -34,10 +32,8 @@
 
           <div class="comments">
             <h3 class="singleProject__subtitle">Leave a Review</h3>
-            <form class="form" action="{% url 'project' object %}" method="POST">
+            <form class="form" action="{% url 'project' i.id %}" method="POST">
               {%csrf_token%}
-              
-              {%for field in form%}
               <!-- Textarea -->
               <div class="form__field">
                 <label for="id_body">Comments: </label>
@@ -45,7 +41,6 @@
                   placeholder="Write your review here..." value=""></textarea>
               </div>
               <input class="btn btn--sub btn--lg" type="submit" value="Comment" />
-              {%endfor%}
             </form><br><br>
             <h3 class="singleProject__subtitle">Reviews:</h3>
             <div class="commentList">
@@ -62,8 +57,7 @@
                   </p>
                   <br>  
                 </div>
-                {%endif%}
-                {%endfor%}
+                
               </div>
                   {% endif %}
                   {%endfor%}

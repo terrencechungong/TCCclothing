@@ -54,9 +54,13 @@ def login_view(request):
     
 
 def menCatalog(request):
+    arr = []
     item, search_query, color, material, fit, itemAll, myFilter, details, paginator = searchItems(request)
-    context = {'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
-    return render(request, 'men.html', context,)
+    for i in item:
+        if i.gender == "Men":
+            arr.append(i.id)
+    context = {'arrLength':len(arr),'arr':arr,'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
+    return render(request, 'men.html', context)
 
 def menCatalogSpecific(request, type):
     item, search_query, color, material, fit, itemAll, myFilter, details, paginator = specific(request, type)
@@ -68,19 +72,14 @@ def womenCatalogSpecific(request, type):
     context = {'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
     return render(request, 'women.html', context,)
 
-def kidsCatalogSpecific(request, type):
-    item, search_query, color, material, fit, itemAll, myFilter, details, paginator = specific(request, type)
-    context = {'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
-    return render(request, 'kids.html', context,)
-
-def saleCatalog(request):
+def saleCatalog(request, gender):
     item, search_query, color, material, fit, itemAll, myFilter, details, paginator = searchItems(request)
-    context = {'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
+    context = {'gender':gender,'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
     return render(request, 'sale.html', context)
 
-def kidsCatalog(request):
+def kidsCatalog(request, type):
     item, search_query, color, material, fit, itemAll, myFilter, details, paginator = searchItems(request)
-    context = {'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
+    context = {'type':type,'search_query':search_query,'item':item,'myFilter':myFilter, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, "paginator":paginator }
     return render(request, 'kids.html', context)
 
 
@@ -90,19 +89,20 @@ def womenCatalog(request):
     return render(request, 'women.html', context,)
 
 
-def project(request, object):
+def project(request, pk):
     form = CommentForm()
     if request.method == "POST":
         form = CommentForm(request.POST)
         review = form.save()
-        review.item = Item.objects.get(item_name=object)
         review.owner = request.user
+        review.item = Item.objects.get(id=pk)
         review.save()
-    
+        
 
     review = Review.objects.all()
     item, search_query, color, material, fit, itemAll, myFilter, details, paginator = searchItems(request)
-    context = {'review':review,'search_query':search_query,'item':item,'myFilter':myFilter,'details':details, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, 'object':object, 'form':form }
+    item = Item.objects.get(id=pk)
+    context = {'review':review,'search_query':search_query,'i':item,'myFilter':myFilter,'details':details, 'itemAll':itemAll,'color':color,'fit':fit,'material':material, 'form':form }
     return render(request, 'single-project.html', context)
 
 def createProject(request):

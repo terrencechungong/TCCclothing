@@ -8,7 +8,7 @@
         <h2>Search <span>Products</span></h2>
       </div>
       <div class="hero-section__search">
-        <form class="form" action="{% url 'kids' %}" method="get">
+        <form class="form" action="{% url 'kids' 'Boy' %}" method="get">
           <div class="form__field">
             <label for="formInput#search">Search Products by Name </label>
             <input class="input input--text" id="formInput#search" type="text" name="search_query" value="{{search_query}}"
@@ -62,7 +62,7 @@
     <div class="container">
       <div class="grid grid--three">
        {% for i in item %} 
-       {% if i.gender == "Boys" or i.gender == "Girls" %}
+       {% if i.gender == "Kids" and i.type == type %}
         <div class="column">
           <div class="card project">
             <a href="{%  url 'project' i %}" class="project">
