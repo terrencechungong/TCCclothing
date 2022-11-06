@@ -1,0 +1,121 @@
+{% extends 'projects/main.html' %}
+{% block content %} 
+<!--this isnt showing in this project but use it in yours <td>{{project.created}}</td>-->
+<main class="projects">
+  <section class="hero-section text-center">
+    <div class="container container--narrow">
+      <div class="hero-section__box">
+        <h2>Search <span>Products</span></h2>
+      </div>
+      <div class="hero-section__search">
+        <form class="form" action="{% url 'kids' %}" method="get">
+          <div class="form__field">
+            <label for="formInput#search">Search Products by Name </label>
+            <input class="input input--text" id="formInput#search" type="text" name="search_query" value="{{search_query}}"
+              placeholder="Search" />
+          </div>
+          <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+        </form>
+      </div>
+    </div>
+  </section>
+   <!-- Search Result: DevList 
+  <section class="projectsList"> -->
+    <!-- fix spacing between item columns -->
+    <p class="filter-and-sort-label">FILTER BY</p>
+    <form method="get" class="filter-form"> 
+      <label for="id_color">COLOR:</label>  
+        <select name="color" id="id_color" class="filter-tag">
+    <option value="" selected="">---------</option>
+    {% for i in color %}
+    <option value="{{i.color_id}}">{{i.color_name}}</option>
+    {% endfor %}
+  </select>
+      <label for="id_on_sale">ON SALE:</label>  
+        <select name="on_sale" id="id_on_sale" class="filter-tag">
+    <option value="" selected="">---------</option>
+    <option value="b39cf317-e290-4124-ac50-69a338881f14">On Sale</option>
+    <option value="38ba2fad-4cd5-45c9-bf77-73a0dea3db96">Not on Sale</option>
+  </select>
+      <label for="id_fit">FIT:</label>  
+        <select name="fit" id="id_fit" class="filter-tag">
+    <option value="" selected="">---------</option>
+    {% for i in fit %}
+    <option value="{{i.id}}">{{i.fit_name}}</option>
+    {% endfor %}
+  </select>
+      <label for="id_material">MATERIAL:</label>  
+        <select name="material" id="id_material" class="filter-tag">
+    <option value="">---------</option>
+    {% for i in material %}
+    <option value="{{i.material_name}}" selected="">{{i.material_name}}</option>
+    {% endfor %}
+  </select>
+      <label for="id_price_gt">Price is greater than or equal to:</label>    
+        <input type="number" name="price_gt" value="0" step="any" id="id_price_gt">
+  <label for="id_price_lt">Price is less than or equal to:</label>
+    <input type="number" name="price_lt" step="any" id="id_price_lt">
+        <input type="submit" value="Filter">
+      
+      </form>
+    </form>
+    <div class="container">
+      <div class="grid grid--three">
+       {% for i in item %} 
+       {% if i.gender == "Boys" or i.gender == "Girls" %}
+        <div class="column">
+          <div class="card project">
+            <a href="{%  url 'project' i %}" class="project">
+              <img class="project__thumbnail" src="{{i.picture.url}}" alt="project thumbnail" />
+              <div class="card__body">
+                 <h3 class="project__title">{{i.item_name}}</h3> 
+                 <p><a class="project__author" href="#">{{i.gender}}</a></p> 
+                 
+                 <!-- DISPLAY SALE Price -->
+                  {%if i.on_sale.sale_name == "On Sale" %}
+                  
+                
+             </p><span style="color: rgb(224, 0, 0);">${{i.prod|stringformat:".2f"}} </span>  <span style="text-decoration:line-through; color: black">${{i.price}}</span></p>
+                  {% else %}
+                  <p><span style="color: black;">${{i.price}}</span></p>
+                 {% endif %}
+         
+               
+                <div class="project__tags">
+                  {% for tag in project.tags.all %}
+                  <span class="tag tag--pill tag--main">
+                    <small>{{tag}}</small>
+                  </span>
+                  {% endfor %}
+                </div> 
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+         {% endfor %} 
+      </div>
+    </div>
+  </section>
+
+
+  <div class="pagination">
+    <ul class="container">
+     {% if item.has_previous  %}
+     <li><a href="?page={{item.previous_page_number}}" class="btn page-link">&#10094;Prev</a></li>
+     {% endif %}
+     {% for page in paginator.page_range %}
+     
+     {% if page == item.number %}
+     <li><a href="?page={{page}}" class="btn page-link btn--sub">{{page}}</a></li>
+     {% else %}
+      <li><a href="?page={{page}}" class="btn page-link">{{page}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if item.has_next  %}
+     <li><a href="?page={{item.next_page_number}}" class="btn page-link">Next&#10095;</a></li>
+     {% endif %}
+    </ul>
+  </div>
+</main>
+{% endblock %}
