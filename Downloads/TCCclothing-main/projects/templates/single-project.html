@@ -1,0 +1,124 @@
+{% extends 'projects/main.html' %}
+
+{% block content %}
+  <main class="singleProject my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <h3 class="singleProject__subtitle">Available Colors</h3>
+          <div class="singleProject__toolStack">
+            <span class="tag tag--pill tag--sub tag--lg">
+              <small>{{i.color.color_name}}</small>
+            </span>
+         
+          </div>
+            {% if project.source_link%}
+          <a class="singleProject__liveLink" href="#" target="_blank"><i class="im im-external-link"></i>Source Code
+          </a>
+            {% endif %}
+            {% if project.demo_link%}
+          <a class="singleProject__liveLink" href="#" target="_blank"><i class="im im-external-link"></i>Live Demo
+          </a>
+            {% endif %}
+        </div>
+        <div class="column column--2of3">
+          <img class="singleProject__preview" src="{{i.picture.url}}" alt="portfolio thumbnail" style="margin-left: 10%; width: 60%; height: 50%;"/>
+          <div class="comments" style="margin-top: -.5%;"></div>
+          <a href="profile.html" class="singleProject__developer">{{i.details.gender}}</a>
+          <h2 class="singleProject__title" style="display: inline; margin-right: 13%;">{{i.item_name}}</h2>
+          <form action="{% url 'addToCartView' i.id %}" method="POST">
+            {%csrf_token%}
+            <select name="size" id="id_size" style="border-width: .5px; width:120px; height:45px; background-color: rgb(255, 255, 255); border-radius: 7px;" required oninvalid="this.setCustomValidity('Please choose a size')"
+            oninput="this.setCustomValidity('')">
+              <option value="" disabled selected hidden>Choose size</option>
+              <!-- Selection based on clothing type and gender -->
+              <!-- Selection based on clothing type and gender -->
+              {%if i.type == "Bottoms" and i.gender == "Women" %}
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+              <option value="16">16</option>
+              {% endif %}
+              {%if i.type == "Bottoms" and i.gender == "Men" %}
+              <option value="28">28</option>
+              <option value="29">29</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34">34</option>
+              {% endif %}
+              {%if i.type == "Tops" or i.gender == "Kids" %}
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              {% endif %}
+            </select>
+            <input type="text" name="itemInCart" value="{{i.id}}" min="0" required="" id="id_itemInCart" style="display: none;">
+            <input type="text" name="cartOwner" value="{{request.user.id}}" required="" id="id_cartOwner" style="display: none;">
+            <input type="number" name="quantity" value="1" min="0" required="" id="id_quantity" style="display: none;">
+            <input class="btn btn--sub" type="submit" value="Add to cart">
+          </form>
+          <br>
+          <br>
+          <h3 class="singleProject__subtitle">About the Product</h3>
+          <div class="singleProject__info">
+           {{i.details}}
+          </div>
+          <div class="comments">
+            <h3 class="singleProject__subtitle">Leave a Review</h3>
+            <form class="form" action="{% url 'project' i.id %}" method="POST">
+              {%csrf_token%}
+              
+              {%for field in form%}
+              <!-- Textarea -->
+              <div class="form__field">
+                <label for="id_body">Comments: </label>
+                <textarea class="input input--textarea" name="body" id="id_body"
+                  placeholder="Write your review here..." value=""></textarea>
+              </div>
+              <input class="btn btn--sub btn--lg" type="submit" value="Comment" />
+              {%endfor%}
+            </form><br><br>
+            <h3 class="singleProject__subtitle">Reviews:</h3>
+            <div class="commentList">
+              {%for rev in review%}
+              {%if rev.item.id == i.id %}
+              <div class="comment" style="display: block; margin-bottom: 15px;">
+                <div style="display: inline; margin-bottom: 15px;">
+                <p style="display: inline;"><span style="color: rgb(0, 159, 250);">{{rev.owner}}</span> says:</p>
+                </div>
+                <div class="comment__details"  style="display: inline; margin-bottom: 15px;">
+                  <a href="profile.html" class="comment__author"></a>
+                    <p>{{rev.body}}</p>
+                  </p>
+                  <br>  
+                </div>
+                {% endif %}
+                {%endfor%}
+                {% if revLen == 0 %}
+                <div class="comment" style="display: block; margin-bottom: 15px;">
+                  <div style="display: inline; margin-bottom: 15px;">
+                  </div>
+                  <div class="comment__details"  style="display: inline; margin-bottom: 15px;">
+                      <p>No reviews yet!</p>
+                    <br>  
+                  </div>
+                {% endif %}
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+<br>
+<p></p>
+{% endblock  %}

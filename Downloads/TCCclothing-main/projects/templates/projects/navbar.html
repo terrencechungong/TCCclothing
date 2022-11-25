@@ -1,0 +1,51 @@
+{%  load static %}
+<link rel="stylesheet" href="{% static 'projects/app.css' %}" />
+<header class="header">
+    <div class="container container--narrow">
+      <h5 style="color: rgb(196, 196, 196);">TCC Clothing</h5>
+      <nav class="header__nav">
+        <input type="checkbox" id="responsive-menu" />
+        <label for="responsive-menu" class="toggle-menu">
+          <span>Menu</span>
+          <div class="toggle-menu__lines"></div>
+        </label>
+        <ul class="header__menu">
+          <div class="dropdown">
+            <li class="header__menuItem"><a href="{% url 'men' %}">Men</a></li>
+            <div class="dropdown-content">
+              <a href="{% url 'men-specific' 'Jeans' %}">Jeans</a>
+              <a href="{% url 'men-specific' 'Shirt' %}">Shirts</a>
+            </div>
+          </div>
+          <div class="dropdown">
+          <li class="header__menuItem"><a href="{% url 'women' %}">Women</a></li>
+          <div class="dropdown-content">
+              <a href="{% url 'women-specific' 'Bottoms' %}">Bottoms</a>
+              <a href="{% url 'women-specific' 'Tops' %}">Tops</a>
+            </div>
+          </div>
+          <div class="dropdown">
+          <li class="header__menuItem"><a href="{% url 'kids' %}">Kids</a></li>
+          <div class="dropdown-content">
+          <a href="{% url 'kids-specific' 'Boys' %}">Boys</a>
+          <a href="{% url 'kids-specific' 'Girls' %}">Girls</a>
+        </div>
+      </div>
+      <div class="dropdown">
+            <li class="header__menuItem"><a href="{% url 'sale' 'None' %}" >Sale</a></li>
+            <div class="dropdown-content">
+              <a href="{% url 'sale' 'Men' %}">Mens Sale Items</a>
+              <a href="{% url 'sale' 'Women' %}">Womens Sale Items</a>
+              <a href="{% url 'sale' 'Kids' %}">Kids Sale Items</a>
+            </div>
+          </div>
+            <li class="header__menuItem"><a href="{% url 'cart' %}">Cart</a></li>
+            {% if request.user.is_authenticated %}
+          <li class="header__menuItem"><a href="{% url 'account-details' %}" class="btn btn--sub">My Account</a></li>
+          {% else %}
+          <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Log in/Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>

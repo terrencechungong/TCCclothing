@@ -1,0 +1,131 @@
+{% extends 'projects/main.html' %}
+{% block content %}
+
+<!-- Main Section -->
+<main class="settingsPage profile my-md">
+    <div class="container">
+      <div class="layout">
+        
+        <div class="column column--2of3">
+          
+          <div class="settings">
+            <h3 class="settings__title">My details</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'logout' %}" style="border-radius: 1px; width: 114px;">Log Out</a>
+          </div>
+  
+          <table class="settings__table">
+            <tr>
+              <a class="tag tag--pill tag--main settings__btn" href="{%url 'edit-account' %}" style="color: rgb(8, 47, 86);"><i
+                class="im im-edit"></i> Edit Account Info</a>
+              <td class="settings__tableInfo">
+                <h4>Email</h4>
+                <p>
+                  {{user.email}}
+                </p>
+                <br>
+                <h4>First Name</h4>
+                <p>
+                  {{user.first_name}}
+                </p>
+                <br>
+                <h4>Last Name</h4>
+                <p>
+                  {{user.last_name}}
+                </p>
+                <br>
+                <h4>Phone Number</h4>
+                <p>
+                  {{user.phone_number}}
+                </p>
+                <br>
+                <h4>Gender</h4>
+                <p>
+                  {%if user.gender == 1%}
+                  <p>Male</p>
+                  {%elif user.gender == 2%}
+                  <p>Female</p>
+                  {%endif%}
+                </p>
+                <br>
+                <h4>Password</h4>
+                <p style="color:#4f97a9"><a href="{% url 'password_change_form' %}" style="color:#4f97a9">Click here to change your password</a></p>
+              </td>
+              <td class="settings__tableActions" style="background-color: white;">
+                <a class="tag tag--pill tag--main settings__btn" href="#" style="background-color: white;"><i
+                    class="im im-edit" style="background-color: white;"></i> </a>
+              </td>
+            </tr>
+          </table>
+  
+          <div class="settings">
+            <h3 class="settings__title">Order History</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'men' %}" style="border-radius: 1px; width: 196px;">Continue Shopping</a>
+          </div>
+  
+          <div class="column column--2of3">
+          
+            <div class="settings" style="display: block;">
+              {% if purLen == 0 %}
+              <table class="settings__table">
+                <tr>
+                  <td class="settings__tableInfo">
+                    <h4>No orders yet! Click <a href="{% url 'men' %}" style="margin-right: -5px; color: #4f97a9;">here</a>to continue shopping.</h4>
+               
+                  </td>
+                </tr>
+              </table>
+              {% endif %}
+             {% for i in purchases %}
+            </div>
+            <table class="settings__table">
+              <tr>
+                <td class="settings__tableInfo">
+                  <h4>Purchase Date: {{i.purchaseDate}}</h4>
+                  <h4>Cart Size: {{i.size}}</h4>
+                  <h4 style="color: rgb(19, 161, 19)">Purchase Total: ${{i.totalPrice}}</h4>
+                  <br>
+                  <h4>Items: </h4>
+                  {%for j in cartitem%}
+                  {% for k in i.purchasedItemIds %}
+                  {% if j.id == k%}
+                  <h4>{{j.itemInCart.item_name}} Size: {{j.size}} Quantity: {{j.quantity}}</h4>
+                  {%endif%}
+                  {%endfor%}
+                  {%endfor%}
+                  <br>
+                </td>
+                    {% endfor %}
+              </tr>
+            </table>
+            <div class="settings" style="display: block;">
+              <h3 class="settings__title">My Strore Credit balance</h3>
+              <a class="tag tag--pill tag--sub settings__btn tag--lg" href="#" style="border-radius: 1px; width: 144px;">Add Credits</a>
+            </div>
+    
+            <table class="settings__table">
+              <tr>
+                <td class="settings__tableInfo">
+                  <p style="color: black; font-weight: 500;">
+                    Store credits are an alternative to money that we use to allow shoppers to make purchases.
+                  </p>
+                  <br>
+                  <h4>Balance</h4>
+                  <p>
+                    You have unlimeted store credits! Enjoy your time shopping with us!
+                  </p>
+                </td>
+                <td class="settings__tableActions">
+                  <a class="tag tag--pill tag--main settings__btn" href="#" style="color: white; background-color: white;"><i
+                      class="im im-edit"></i> Edit</a>
+                  <a class="tag tag--pill tag--main settings__btn" href="#" style="color: white; background-color: white;"><i
+                      class="im im-x-mark-circle-o"></i>
+                    Delete</a>
+                </td>
+              </tr>
+            </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+{% endblock %}

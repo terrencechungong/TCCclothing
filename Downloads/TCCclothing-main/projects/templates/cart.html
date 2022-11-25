@@ -1,0 +1,110 @@
+{% extends 'projects/main.html' %}
+{% load mathfilters %}
+{% block content %}
+<h1 style="text-align:center">Shopping Cart</h1>
+{% if cartSize == 0 %}
+<h3 style="text-align: center;  margin-top: 80px; color: black;">YOUR SHOPPING CART IS EMPTY!</h3>
+<p style="text-align: center; color: black; font-size: larger;">Click <a href="{% url 'men' %}" style="color: #4f97a9;">here</a> to continue shopping.</p>
+{%else%}
+{% for item in cartItems %}
+{%if item.cartOwner == request.user and item.purchased != "True" %}
+<div style="width: 60%; margin-bottom: 40px; background-color: rgb(255, 255, 255); height: 195px; margin-left: 19px; border-left: solid 3px rgb(0, 0, 0);">
+    <div style="display: inline;">
+        <a href="{% url 'project' item.itemInCart.id %}"><img src="{{item.itemInCart.picture.url}}" style="width: 180px; height: 195px;"></a>
+    </div>
+    <div style="display: inline; vertical-align: top; margin-left: 1%;">
+        <table style="display: inline;">
+            <tr>
+                <td>
+                    <p style="color: black;">{{item.itemInCart.item_name}}</p>
+                    {% if item.itemInCart.on_sale.sale_name == "On Sale" %}
+                    <p style="color: black;">${{item.itemInCart.price|mul:0.6|stringformat:".2f"}}</p>
+                    {% else %}
+                    <p style="color: black;">${{item.itemInCart.price}}</p>
+                    {%endif%}
+                    <br>
+                    <p style="color: black; font-size: small;">Size: {{item.size}}</p>
+                    <p style="color: black; font-size: small;">Color: {{item.itemInCart.color.color_name}}</p>
+                </td>
+                <td>
+                    <p style="margin-top: 3px;"></p>
+                    <br>
+                    <br>
+                    <br>
+                    <p style="color: black; font-size: small; display: inline;">Quantity: </p>
+                    <form method="POST" action="{% url 'deleteCartItem' item.id %}" style="display: inline;">
+                        {%csrf_token%}
+                        <input type="text" name="size" value="{{item.size}}" required="" id="id_size" style="display: none;">
+                        <input type="text" name="itemInCart" value="{{item.itemInCart.id}}" min="0" required="" id="id_itemInCart" style="display: none;">
+                        <input type="text" name="cartOwner" value="{{item.cartOwner.id}}" required="" id="id_cartOwner" style="display: none;">
+                        <input type="text" name="quantity" value="{{item.quantity}}" required="" id="id_quantity" style="display: none;">
+                        <input class="btn btn--sub" type="submit" value="-" >
+                    </form>
+                    <form method="POST" action="{% url 'updateCartItem' item.id %}" style="display: inline;">
+                        {%csrf_token%}
+                        <input type="text" name="size" value="{{item.size}}" required="" id="id_size" style="display: none;">
+                        <input type="text" name="itemInCart" value="{{item.itemInCart.id}}" min="0" required="" id="id_itemInCart" style="display: none;">
+                        <input type="text" name="cartOwner" value="{{item.cartOwner.id}}" required="" id="id_cartOwner" style="display: none;">
+                        <input type="text" name="quantity" value="{{item.quantity}}" required="" id="id_quantity" style="width: 14%; display: inline; height: 20px;">
+                        <input class="btn btn--sub" type="submit" value="+">
+                    </form>
+                    {% if item.itemInCart.on_sale.sale_name == "On Sale" %}
+                    <p style="color: black; font-size: small;">Total: ${{item.itemInCart.price|mul:0.6|stringformat:".2f"}}</p>
+                    {%else%}
+                    <p style="color: black;  font-size: small;">Total: ${{item.itemInCart.price}}</p>
+                    {%endif%}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{%endif%}
+{% endfor %}
+<div style="border-left: solid 3px rgb(0, 0, 0); margin-left: 19px; width: 60%; background-color: rgb(255, 255, 255);">
+    <table style="width: 100%;">
+        <tr>
+            <td>Order Value: </td>
+            <td style="padding-left: 10px;"> </td>
+            <td style="padding-left: 40px;"> </td>
+            <td style="padding-left: 90px;"> </td>
+            <td style="padding-left: 90px;">${{total}}</td>
+        </tr>
+        <tr>
+            <td>Shipping: </td>
+            <td style="padding-left: 10px;"> </td>
+            <td style="padding-left: 40px;"> </td>
+            <td style="padding-left: 90px;"> </td>
+            <td style="padding-left: 90px;">$0</td>
+        </tr>
+        <tr>
+            <td>Tax: </td>
+            <td style="padding-left: 10px;"> </td>
+            <td style="padding-left: 40px;"> </td>
+            <td style="padding-left: 90px;"> </td>
+            <td style="padding-left: 90px;">$0</td>
+        </tr>
+    </table>
+    <hr>
+    <table style="width: 100%;">
+        <tr>
+            <td>Total: </td>
+            <td style="padding-left: 10px;"> </td>
+            <td style="padding-left: 40px;"> </td>
+            <td style="padding-left: 90px;"> </td>
+            <td style="padding-left: 140px;">${{total}}</td>
+        </tr>
+    </table>
+
+    <div style="margin-left: auto; margin-right: auto;">
+    <form action="{% url 'purchaseSuccess' %}" method="POST" >
+        {%csrf_token%}
+        <input type="text" name="purchasedItemIds" value="{{cartIds}}" required="" id="id_purchasedItemIds" style="display: none;">
+        <input type="text" name="purchaseOwner" value="{{request.user.id}}" required="" id="id_cartOwner" style="display: none;">
+        <input type="text" name="size" value="{{cartSize}}" required="" id="id_size" style="display: none;">
+        <input type="text" name="totalPrice" value="{{total}}"  required="" id="id_totalPrice" style="display: none;">
+        <input class="btn btn--sub" type="submit" value="Purchase" >
+      </form>
+      </div>
+</div>
+{%endif%}
+{%endblock content%}
