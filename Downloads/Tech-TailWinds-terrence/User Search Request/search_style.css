@@ -1,0 +1,35 @@
+.tag-container {
+  background: #ffffff;
+  margin: auto;
+  padding: 4px;
+  border: 1px solid;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag-container .tag {
+  padding: 2px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e3d1e1;
+  border-radius: 2px;
+  background: #f2f2f2;
+}
+
+input {
+  border-top-style: hidden;
+  border-left-style: hidden;
+  border-right-style: hidden;
+  border-bottom-style: hidden;
+}
+
+.form-control:focus {
+  outline: none;
+}
+.tag i {
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}

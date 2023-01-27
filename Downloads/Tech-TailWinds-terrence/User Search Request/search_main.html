@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Search Example</title>
+    <!-- Import the webpage's stylesheets -->
+    <link rel="stylesheet" href="search_style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../User Data/cookies_pop_up.css"/>
+    <!-- Import the webpage's javascript files -->
+    <script src="search_filter.js" defer></script>
+    <script defer src="../User Data/permissions.js" ></script>
+    <!-- Import axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  </head>
+  <body>
+    <div class="tag-container">
+        <input id="search_input" type="text" class="form-control" placeholder="Where do you want to go?">
+    </div>
+    
+    <!-- Test code for blocked user location -->
+    <input type="text" id="user-address">
+    <button class="search-button">
+      Search
+    </button>
+
+    <div class="cookie-container">
+      <p>By using this site you agree to our <a href="#" id="cookie-policy">cookie policy</a>.
+      </p>
+      <button class="cookie-button">
+        Accept
+      </button>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+.cookie-container {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    font-size: 18px;
+    background: #112958;
+    padding: 0 32px;
+    opacity: 1;
+    color: white;
+    transition: 500ms;
+}
+
+.cookie-container.hide {
+    bottom: 0;
+}
+
+.cookie-button {
+    background: rgb(203, 106, 27);
+    border: 0;
+    color: white;
+    padding: 12px 48px;
+    font-size: 16px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#cookie-policy {
+    color: white;
+}
+
+
